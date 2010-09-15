@@ -17,7 +17,8 @@ mkdir -p /mnt/gentoo
 mount /dev/hda3 /mnt/gentoo
 
 # Mount and Copy contents included in the latest minimal-install iso image
-wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | egrep -o "(https?|ftp)://[^\"]+\.iso" | head -n 1)
+wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | \
+	egrep -o "(https?|ftp)://[^\"]+\.iso" | head -n 1)
 mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
 cp -a /mnt/cdrom/* /mnt/gentoo
@@ -31,7 +32,8 @@ ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netc
 ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/mask.txt
 route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/gw.txt
 #cp -L /etc/resolv.conf /mnt/gentoo/netconfig/resolv.conf
-cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | perl -pe 's/\n/ /g' > /mnt/gentoo/netconfig/resolv.txt
+cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
+	perl -pe 's/\n/ /g' > /mnt/gentoo/netconfig/resolv.txt
 
 # Grub configuration
 cat > /boot/grub/menu.lst <<EOM
@@ -46,7 +48,6 @@ title=Gentoo install
 EOM
 
 # Copy the scripts
-mkdir -p /mnt/gentoo$(cd $(dirname $0); cd ../; pwd)
-cp -a $(cd $(dirname $0); cd ../; pwd) /mnt/gentoo$(cd $(dirname $0); cd ../; pwd)
+cp -a $(cd $(dirname $0); pwd) /mnt/gentoo/scripts
 
 reboot

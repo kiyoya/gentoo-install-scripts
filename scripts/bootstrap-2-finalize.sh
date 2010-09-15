@@ -16,3 +16,5 @@ sed -i \
 	/etc/fstab
 
 rm -rf /netconfig
+
+rm -f /kernel-version.txt
