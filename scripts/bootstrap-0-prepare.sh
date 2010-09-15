@@ -1,6 +1,7 @@
 #!/bin/bash
 
-GENTOO_MIRROR=$(bash $(dirname $0)/bootstrap-misc-mirror.sh)
+SCRIPTSDIR=$(cd $(dirname $0); pwd)
+GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/bootstrap-misc-mirror.sh)
 
 cd /root
 
@@ -48,6 +49,6 @@ title=Gentoo install
 EOM
 
 # Copy the scripts
-cp -r $(dirname $0) /mnt/gentoo/scripts
+cp -r ${SCRIPTSDIR} /mnt/gentoo/scripts
 
 reboot

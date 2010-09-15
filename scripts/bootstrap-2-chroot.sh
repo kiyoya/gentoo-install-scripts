@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BROOT=${BROOT-/mnt/cdrom}
+SCRIPTSDIR=$(cd $(dirname $0); pwd)
 
 ## Installing the Gentoo Base System
 
@@ -28,7 +29,7 @@ emerge gentoo-sources -p --quiet | \
 	egrep -o "gentoo-sources-[r0-9.-]+" | egrep -o "[0-9][r0-9.-]+" > /kernel-version.txt
 
 cd /usr/src/linux
-cp $(find $(dirname $0)/linux-config -type f | sort -nr | head -n 1) .config
+cp $(find ${SCRIPTSDIR}/linux-config -type f | sort -nr | head -n 1) .config
 make oldconfig
 cp arch/x86_64/boot/bzImage /boot/kernel-$(cat /kernel-version.txt)
 

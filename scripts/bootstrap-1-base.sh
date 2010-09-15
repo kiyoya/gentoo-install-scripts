@@ -1,7 +1,8 @@
 #!/bin/bash
 
 BROOT=${BROOT-/mnt/cdrom}
-GENTOO_MIRROR=$(bash $(dirname $0)/bootstrap-misc-mirror.sh)
+SCRIPTSDIR=$(cd $(dirname $0); pwd)
+GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/bootstrap-misc-mirror.sh)
 
 ## Configuring your network
 
