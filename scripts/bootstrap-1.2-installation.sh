@@ -7,10 +7,11 @@ GENTOO_MIRROR=$(bash $(dirname $0)/bootstrap-misc-mirror.sh)
 cd /mnt/gentoo
 
 wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-stage3/ | \
-	egrep -o "(https?|ftp)://[^\"]+\.tar\.bz2" | head -n 1)
+	egrep -o "(https?|ftp)://[^\"]+/stage3[^.]+\.tar\.bz2" | head -n 1)
 tar xvjpf stage3-*.tar.bz2
 
-wget $(wget -q -O - ${GENTOO_MIRROR}/snapshots/ | egrep -o "(https?|ftp)://[^\"]+\.tar\.bz2" | head -n 1)
+wget $(wget -q -O - ${GENTOO_MIRROR}/snapshots/ | \
+	egrep -o "(https?|ftp)://[^\"]+/portage-latest\.tar\.bz2" | head -n 1)
 tar xvjf portage-latest.tar.bz2 -C /mnt/gentoo/usr
 
 cat > /mnt/gentoo/etc/make.conf <<EOM

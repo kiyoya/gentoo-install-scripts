@@ -12,17 +12,11 @@ cp -L /etc/resolv.conf /mnt/gentoo/etc/
 mount -t proc none /mnt/gentoo/proc
 mount -o bind /dev /mnt/gentoo/dev
 chroot /mnt/gentoo /bin/bash
-env-update
-source /etc/profile
 
-emerge --sync --quiet
+cd
+umount /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
+swapoff /mnt/gentoo/swap.img
+umount /mnt/gentoo
 
-sed -i \
-	-e "s/^#en_US ISO-8859-1/en_US ISO-8859-1/" \
-	-e "s/^#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" \
-	-e "s/^#ja_JP.EUC-JP EUC-JP/ja_JP.EUC-JP EUC-JP/" \
-	-e "s/^#ja_JP.UTF-8 UTF-8/ja_JP.UTF-8 UTF-8/" \
-	-e "s/^#ja_JP EUC-JP/ja_JP UTF-8/" \
-	/etc/locale.gen
-
-locale-gen
+reboot
+exit

@@ -10,7 +10,7 @@ ifconfig eth0 $(cat ${BROOT}/netconfig/addr.txt) \
 
 route add default gw $(cat ${BROOT}/netconfig/gw.txt)
 
-for ip in ${BROOT}/netconfig/resolv.txt
+for ip in $(cat ${BROOT}/netconfig/resolv.txt)
 do
 	echo "nameserver ${ip}" >> /etc/resolv.conf
 done
