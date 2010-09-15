@@ -67,6 +67,8 @@ sed -i \
 
 ## Installing Necessary System Tools
 
+rc-update add sshd default
+
 emerge syslog-ng --quiet
 rc-update add syslog-ng default
 
@@ -74,6 +76,14 @@ emerge vixie-cron --quiet
 rc-update add vixie-cron default
 
 emerge logrotate --quiet
+
+### bug #275555
+
+mkdir -p /etc/portage/package.keywords
+cat > /etc/portage/package.keywords/chpasswd <<EOM
+=sys-apps/shadow-4.1.4.2-r5 ~amd64
+EOM
+emerge shadow -1 --quiet
 
 ## Configuring the Bootloader
 
@@ -100,9 +110,15 @@ sed -i \
 	-e "s|c4:2345|#c4:2345|" \
 	-e "s|c5:2345|#c5:2345|" \
 	-e "s|c6:2345|#c6:2345|" \
-	-e "s|s0:12345:respawn:/sbin/agetty 9600 ttyS0 vt100|s0:2345:respawn:/sbin/agetty -h -L 115200 ttyS0 vt100|" \
+	-e "s|#s0:12345:respawn:/sbin/agetty 9600 ttyS0 vt100|s0:2345:respawn:/sbin/agetty -h -L 115200 ttyS0 vt100|" \
 	/etc/inittab
 
-echo "root:$1" | chpasswd
+if [ $# -gt 0 ]
+then
+	echo "root:$1" | chpasswd
+else
+	echo "Changing password for root"
+	passwd
+fi
 
 #exit
