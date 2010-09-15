@@ -1,7 +1,8 @@
 #!/bin/bash
 
-SCRIPTSDIR=$(cd $(dirname $0); pwd)
-GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/bootstrap-misc-mirror.sh)
+BROOT=${BROOT-/mnt/gentoo}
+SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
+GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/scripts/bootstrap-misc-mirror.sh)
 
 cd /root
 
@@ -49,6 +50,6 @@ title=Gentoo install
 EOM
 
 # Copy the scripts
-cp -r ${SCRIPTSDIR} /mnt/gentoo/scripts
+cp -r ${SCRIPTSDIR} ${BROOT}/gentoo-sakura-vps
 
 #reboot

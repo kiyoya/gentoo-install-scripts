@@ -1,8 +1,8 @@
 #!/bin/bash
 
 BROOT=${BROOT-/mnt/cdrom}
-SCRIPTSDIR=$(cd $(dirname $0); pwd)
-GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/bootstrap-misc-mirror.sh)
+SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
+GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/scripts/bootstrap-misc-mirror.sh)
 
 ## Configuring your network
 
@@ -63,11 +63,17 @@ cp -L /etc/resolv.conf /mnt/gentoo/etc/
 
 mount -t proc none /mnt/gentoo/proc
 mount -o bind /dev /mnt/gentoo/dev
-mount -o bind /mnt/cdrom /mnt/gentoo/mnt/cdrom
+mkdir -p /mnt/gentoo${BROOT}
+mount -o bind ${BROOT} /mnt/gentoo${BROOT}
+
 chroot /mnt/gentoo /bin/bash
 
+# Copy the scripts
+umount /mnt/gentoo${BROOT}
+cp -r ${SCRIPTSDIR} /mnt/gentoo${BROOT}
+
 cd
-umount /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc /mnt/gentoo/mnt/cdrom
+umount /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
 swapoff /mnt/gentoo/swap.img
 umount /mnt/gentoo
 
