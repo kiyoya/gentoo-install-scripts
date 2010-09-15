@@ -18,3 +18,5 @@ sed -i \
 rm -rf /netconfig
 
 rm -f /kernel-version.txt
+
+#reboot

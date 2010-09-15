@@ -51,4 +51,4 @@ EOM
 # Copy the scripts
 cp -r ${SCRIPTSDIR} /mnt/gentoo/scripts
 
-reboot
+#reboot
