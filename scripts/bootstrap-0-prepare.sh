@@ -48,6 +48,6 @@ title=Gentoo install
 EOM
 
 # Copy the scripts
-cp -a $(cd $(dirname $0); pwd) /mnt/gentoo/scripts
+cp -r $(cd $(dirname $0); pwd) /mnt/gentoo/scripts
 
 reboot
