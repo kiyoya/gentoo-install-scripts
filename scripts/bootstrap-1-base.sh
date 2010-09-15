@@ -62,10 +62,11 @@ cp -L /etc/resolv.conf /mnt/gentoo/etc/
 
 mount -t proc none /mnt/gentoo/proc
 mount -o bind /dev /mnt/gentoo/dev
+mount -o bind /mnt/cdrom /mnt/gentoo/mnt/cdrom
 chroot /mnt/gentoo /bin/bash
 
 cd
-umount /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
+umount /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc /mnt/gentoo/mnt/cdrom
 swapoff /mnt/gentoo/swap.img
 umount /mnt/gentoo
 
