@@ -123,4 +123,4 @@ else
 	passwd
 fi
 
-#exit
+exit

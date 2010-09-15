@@ -52,4 +52,4 @@ EOM
 # Copy the scripts
 cp -r ${SCRIPTSDIR} ${BROOT}/gentoo-sakura-vps
 
-#reboot
+reboot

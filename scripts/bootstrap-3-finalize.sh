@@ -17,4 +17,4 @@ sed -i \
 
 rm -f /kernel-version.txt
 
-#reboot
+reboot

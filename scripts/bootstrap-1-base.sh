@@ -77,4 +77,4 @@ umount /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
 swapoff /mnt/gentoo/swap.img
 umount /mnt/gentoo
 
-#reboot
+reboot
