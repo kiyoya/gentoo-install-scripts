@@ -47,6 +47,6 @@ EOM
 
 # Copy the scripts
 mkdir -p /mnt/gentoo$(cd $(dirname $0); cd ../; pwd)
-cp -a $(dirname $0) /mnt/gentoo$(cd $(dirname $0); cd ../; pwd)
+cp -a $(cd $(dirname $0); cd ../; pwd) /mnt/gentoo$(cd $(dirname $0); cd ../; pwd)
 
 reboot
