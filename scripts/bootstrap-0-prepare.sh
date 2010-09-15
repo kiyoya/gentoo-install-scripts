@@ -17,7 +17,7 @@ mkdir -p /mnt/gentoo
 mount /dev/hda3 /mnt/gentoo
 
 # Mount and Copy contents included in the latest minimal-install iso image
-wget \$(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | egrep -o "${GENTOO_MIRROR}[^\"]+\.iso" | head -n 1)
+wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | egrep -o "(https?|ftp)://[^\"]+\.iso" | head -n 1)
 mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
 cp -a /mnt/cdrom/* /mnt/gentoo
