@@ -45,4 +45,7 @@ title=Gentoo install
 	initrd /isolinux/gentoo.igz
 EOM
 
+# Copy the scripts
+cp -a $(dirname $0) /mnt/gentoo/root$(cd $(dirname $0); pwd)
+
 reboot
