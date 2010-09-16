@@ -107,12 +107,12 @@ grub-install --no-floppy /dev/hda
 # Post install
 
 sed -i \
-	-e "s|c2:2345|#c2:2345|" \
-	-e "s|c3:2345|#c3:2345|" \
-	-e "s|c4:2345|#c4:2345|" \
-	-e "s|c5:2345|#c5:2345|" \
-	-e "s|c6:2345|#c6:2345|" \
-	-e "s|#s0:12345:respawn:/sbin/agetty 9600 ttyS0 vt100|s0:2345:respawn:/sbin/agetty -h -L 115200 ttyS0 vt100|" \
+	-e "s|^c2:2345|#c2:2345|" \
+	-e "s|^c3:2345|#c3:2345|" \
+	-e "s|^c4:2345|#c4:2345|" \
+	-e "s|^c5:2345|#c5:2345|" \
+	-e "s|^c6:2345|#c6:2345|" \
+	-e "s|^#s0:12345:respawn:/sbin/agetty 9600 ttyS0 vt100|s0:2345:respawn:/sbin/agetty -h -L 115200 ttyS0 vt100|" \
 	/etc/inittab
 
 if [ $# -gt 0 ]
@@ -122,5 +122,24 @@ else
 	echo "Changing password for root"
 	passwd
 fi
+
+cat > /etc/init.d/gentoo-sakura-vps-finalize <<EOM
+#!/sbin/runscript
+
+depend() {
+	need localmount
+}
+
+start() {
+	rc-update del gentoo-sakura-vps-finalize default
+	rm -f /etc/init.d/gentoo-sakura-vps-finalize
+	if [[ -f ${BROOT}/gentoo-sakura-vps ]]
+	then
+		${BROOT}/gentoo-sakura-vps/bootstrap-3-finalize.sh
+	fi
+}
+EOM
+chmod +x /etc/init.d/gentoo-sakura-vps-finalize
+rc-update add gentoo-sakura-vps-finalize default
 
 exit

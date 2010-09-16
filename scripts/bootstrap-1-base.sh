@@ -50,7 +50,7 @@ CFLAGS="-O2 -pipe -march=native -fomit-frame-pointer"
 CXXFLAGS="-O2 -pipe -march=native -fomit-frame-pointer"
 MAKEOPTS="-j3"
 
-USE="logrotate m17n-lib mmx nls sse sse2 ssse3 thread unicode"
+USE="logrotate m17n-lib mmx nls sse sse2 ssse3 threads unicode"
 LINGUAS="ja"
 EOM
 
@@ -66,7 +66,12 @@ mount -o bind /dev /mnt/gentoo/dev
 mkdir -p /mnt/gentoo${BROOT}
 mount -o bind ${BROOT} /mnt/gentoo${BROOT}
 
-chroot /mnt/gentoo /bin/bash
+if [ $# -gt 0 ]
+then
+	chroot /mnt/gentoo $1
+else
+	chroot /mnt/gentoo /bin/bash
+fi
 
 # Copy the scripts
 umount /mnt/gentoo${BROOT}
