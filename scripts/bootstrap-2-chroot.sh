@@ -125,7 +125,7 @@ start() {
 	rm -f /etc/init.d/gentoo-sakura-vps-finalize
 	if [[ -d ${BROOT}/gentoo-sakura-vps ]]
 	then
-		${BROOT}/gentoo-sakura-vps/bootstrap-3-finalize.sh
+		${BROOT}/gentoo-sakura-vps/scripts/bootstrap-3-finalize.sh
 	fi
 }
 EOM
