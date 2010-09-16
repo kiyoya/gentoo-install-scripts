@@ -133,7 +133,7 @@ depend() {
 start() {
 	rc-update del gentoo-sakura-vps-finalize default
 	rm -f /etc/init.d/gentoo-sakura-vps-finalize
-	if [[ -f ${BROOT}/gentoo-sakura-vps ]]
+	if [[ -d ${BROOT}/gentoo-sakura-vps ]]
 	then
 		${BROOT}/gentoo-sakura-vps/bootstrap-3-finalize.sh
 	fi
