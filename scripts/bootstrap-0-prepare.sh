@@ -29,10 +29,10 @@ rm -f /root/install-*.iso
 
 # Backup network configuration
 mkdir -p ${BROOT}/netconfig
-ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/addr.txt
-ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/bcast.txt
-ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/mask.txt
-route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/gw.txt
+ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/addr.txt
+ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/bcast.txt
+ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/mask.txt
+route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/gw.txt
 #cp -L /etc/resolv.conf ${BROOT}/netconfig/resolv.conf
 cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
 	perl -pe 's/\n/ /g' > ${BROOT}/netconfig/resolv.txt
