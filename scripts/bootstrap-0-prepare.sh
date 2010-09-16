@@ -15,27 +15,27 @@ t
 w
 EOF
 mkfs.ext3 /dev/hda3
-mkdir -p /mnt/gentoo
-mount /dev/hda3 /mnt/gentoo
+mkdir -p ${BROOT}
+mount /dev/hda3 ${BROOT}
 
 # Mount and Copy contents included in the latest minimal-install iso image
 wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | \
 	egrep -o "(https?|ftp)://[^\"]+\.iso" | head -n 1)
 mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
-cp -a /mnt/cdrom/* /mnt/gentoo
+cp -a /mnt/cdrom/* ${BROOT}
 umount /mnt/cdrom
 rm -f /root/install-*.iso
 
 # Backup network configuration
-mkdir -p /mnt/gentoo/netconfig
+mkdir -p ${BROOT}/netconfig
 ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/addr.txt
 ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/bcast.txt
 ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/mask.txt
 route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > /mnt/gentoo/netconfig/gw.txt
-#cp -L /etc/resolv.conf /mnt/gentoo/netconfig/resolv.conf
+#cp -L /etc/resolv.conf ${BROOT}/netconfig/resolv.conf
 cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
-	perl -pe 's/\n/ /g' > /mnt/gentoo/netconfig/resolv.txt
+	perl -pe 's/\n/ /g' > ${BROOT}/netconfig/resolv.txt
 
 # Grub configuration
 cat > /boot/grub/menu.lst <<EOM
