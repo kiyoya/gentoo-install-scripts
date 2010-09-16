@@ -4,23 +4,24 @@ BROOT=${BROOT-/mnt/cdrom}
 SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
 GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/scripts/bootstrap-misc-mirror.sh)
 
+### bug #275555
 ## Ask for the new root password
-trap 'stty echo' INT
-stty -echo
-echo -n "New root password: "
-read PASSWD1
-echo ""
-echo -n "New root password (again): "
-read PASSWD2
-echo ""
-stty echo
-trap INT
-
-if [ "${PASSWD1}" != "${PASSWD2}" ]
-then
-	echo "Password mismatch."
-	exit
-fi
+#trap 'stty echo' INT
+#stty -echo
+#echo -n "New root password: "
+#read PASSWD1
+#echo ""
+#echo -n "New root password (again): "
+#read PASSWD2
+#echo ""
+#stty echo
+#trap INT
+#
+#if [ "${PASSWD1}" != "${PASSWD2}" ]
+#then
+#	echo "Password mismatch."
+#	exit
+#fi
 
 ## Configuring your network
 
@@ -84,7 +85,9 @@ mount -o bind /dev /mnt/gentoo/dev
 mkdir -p /mnt/gentoo${BROOT}
 mount -o bind ${BROOT} /mnt/gentoo${BROOT}
 
-chroot /mnt/gentoo ${SCRIPTSDIR}/scripts/bootstrap-2-chroot.sh ${PASSWD1}
+### bug #275555
+#chroot /mnt/gentoo ${SCRIPTSDIR}/scripts/bootstrap-2-chroot.sh ${PASSWD1}
+chroot /mnt/gentoo ${SCRIPTSDIR}/scripts/bootstrap-2-chroot.sh
 
 # Copy the scripts
 umount /mnt/gentoo${BROOT}

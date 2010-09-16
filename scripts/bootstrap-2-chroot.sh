@@ -77,16 +77,6 @@ rc-update add vixie-cron default
 
 emerge logrotate --quiet
 
-### bug #275555
-if [ $# -gt 0 ]
-then
-	mkdir -p /etc/portage/package.keywords
-	cat > /etc/portage/package.keywords/chpasswd <<EOM
-=sys-apps/shadow-4.1.4.2-r5 ~amd64
-EOM
-	emerge shadow -1 --quiet
-fi
-
 ## Configuring the Bootloader
 
 emerge grub --quiet
