@@ -75,6 +75,25 @@ rc-update add syslog-ng default
 emerge vixie-cron --quiet
 rc-update add vixie-cron default
 
+emerge ntp --quiet
+sed -i \
+	-s "s|^NTPCLIENT_OPTS=\"-s -b -u \\|NTPCLIENT_OPTS=\"-b ntp1.sakura.ad.jp\"|" \
+	-s "s|\t0.gentoo.pool.ntp.org 1.gentoo.pool.ntp.org \\\n||" \
+	-s "s|\t2.gentoo.pool.ntp.org 3.gentoo.pool.ntp.org\"\n||" \
+	/etc/conf.d/ntp-client
+sed -i \
+	-s "s|^server 0.gentoo.pool.ntp.org\n|server ntp1.sakura.ad.jp|" \
+	-s "s|^server 1.gentoo.pool.ntp.org\n||" \
+	-s "s|^server 2.gentoo.pool.ntp.org\n||" \
+	-s "s|^server 3.gentoo.pool.ntp.org\n||" \
+	/etc/ntp.conf
+cat >> /etc/ntp.conf <<EOM
+
+logfile	/var/log/ntpd.log
+EOM
+rc-update add ntp-client default
+rc-update add ntpd default
+
 emerge logrotate --quiet
 
 ## Configuring the Bootloader
