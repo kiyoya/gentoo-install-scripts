@@ -7,18 +7,19 @@ GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/scripts/bootstrap-misc-mirror.sh)
 cd /root
 
 # Use swap partition as a temporary storage
-swapoff /dev/hda3
-fdisk /dev/hda <<EOF
+swapoff /dev/vda2
+fdisk /dev/vda <<EOF
 t
 3
 83
 w
 EOF
-mkfs.ext3 /dev/hda3
+mkfs.ext3 /dev/vda2
 mkdir -p ${BROOT}
-mount /dev/hda3 ${BROOT}
+mount /dev/vda2 ${BROOT}
 
 # Mount and Copy contents included in the latest minimal-install iso image
+rm -f /root/install-*.iso
 wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | \
 	egrep -o "(https?|ftp)://[^\"]+\.iso" | head -n 1)
 mkdir -p /mnt/cdrom
@@ -44,9 +45,13 @@ timeout 3
 serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
 terminal --timeout=10 serial console
 title=Gentoo install
-	root (hd0,2)
+	root (hd0,1)
 	kernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot initrd=gentoo.igz udev console=tty0 console=ttyS0,115200n8r
 	initrd /isolinux/gentoo.igz
+title CentOS (2.6.32-220.7.1.el6.x86_64)
+	root (hd0,0)
+	kernel /vmlinuz-2.6.32-220.7.1.el6.x86_64 ro root=UUID=77bdc7b0-03e8-4abe-8c85-a3e1c0137309 rd_NO_LUKS rd_NO_MD SYSFONT=latarcyrheb-sun16  KEYBOARDTYPE=pc KEYTABLE=jp106 LANG=C rd_NO_LVM rd_NO_DM nomodeset clocksource=kvm-clock console=tty0 console=ttyS0,115200n8r
+	initrd /initramfs-2.6.32-220.7.1.el6.x86_64.img
 EOM
 
 # Copy the scripts
@@ -57,4 +62,4 @@ cp -r ${SCRIPTSDIR} ${BROOT}/gentoo-sakura-vps
 #	$1 ${BROOT} $2
 #fi
 
-reboot
+#reboot
