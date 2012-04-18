@@ -46,7 +46,7 @@ serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
 terminal --timeout=10 serial console
 title=Gentoo install
 	root (hd0,1)
-	kernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot initrd=gentoo.igz udev console=tty0 console=ttyS0,115200n8r
+	kernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk
 	initrd /isolinux/gentoo.igz
 title CentOS (2.6.32-220.7.1.el6.x86_64)
 	root (hd0,0)
