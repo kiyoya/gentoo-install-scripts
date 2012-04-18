@@ -25,6 +25,17 @@ wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | \
 mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
 cp -a /mnt/cdrom/* ${BROOT}
+cd ${BROOT}
+yum install squashfs-tools
+unsquashfs image.squashfs
+mv squashfs-root squashfsroot
+mkdir -p initrd
+cd initrd
+zcat ../isolinux/gentoo.igz | cpio -i
+mv ../isolinux/gentoo.igz ../isolinux/gentoo.igz.old
+cp ../squashfsroot/lib/modules/3.2.1-gentoo-r2/kernel/drivers/block/virtio_blk.ko lib/modules/3.2.1-gentoo-r2/kernel/drivers/block/
+cp -r ../squashfsroot/lib/modules/3.2.1-gentoo-r2/kernel/drivers/virtio lib/modules/3.2.1-gentoo-r2/kernel/drivers/
+find . | sort | cpio -H newc -o | gzip > ../isolinux/gentoo.igz
 umount /mnt/cdrom
 rm -f /root/install-*.iso
 
