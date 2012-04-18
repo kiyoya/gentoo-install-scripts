@@ -10,7 +10,7 @@ cd /root
 swapoff /dev/vda2
 fdisk /dev/vda <<EOF
 t
-3
+2
 83
 w
 EOF
