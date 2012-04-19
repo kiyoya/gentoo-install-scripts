@@ -26,7 +26,7 @@ mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
 cp -a /mnt/cdrom/* ${BROOT}
 cd ${BROOT}
-yum install squashfs-tools
+yum -y install squashfs-tools
 unsquashfs image.squashfs
 mv squashfs-root squashfsroot
 
