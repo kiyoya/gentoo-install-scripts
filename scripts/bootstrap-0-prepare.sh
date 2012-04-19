@@ -29,6 +29,7 @@ cd ${BROOT}
 yum install squashfs-tools
 unsquashfs image.squashfs
 mv squashfs-root squashfsroot
+
 mkdir -p initrd
 cd initrd
 zcat ../isolinux/gentoo.igz | cpio -i
@@ -48,6 +49,13 @@ route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/gw
 #cp -L /etc/resolv.conf ${BROOT}/netconfig/resolv.conf
 cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
 	perl -pe 's/\n/ /g' > ${BROOT}/netconfig/resolv.txt
+
+cd ${BROOT}
+cp -r netconfig ./squashfsroot/root/
+cp -r ${SCRIPTSDIR} ./squashfsroot/root/gentoo-sakura-vps
+
+mv image.squashfs image.squashfs.old
+mksquashfs squashfsroot image.squashfs
 
 # Grub configuration
 cat > /boot/grub/menu.lst <<EOM
