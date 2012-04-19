@@ -88,7 +88,8 @@ mount -t proc none /mnt/gentoo/proc
 mount --rbind /dev /mnt/gentoo/dev
 
 # Copy the scripts
-cp -r ${SCRIPTSDIR} /mnt/gentoo/root/
+cp -r ${SCRIPTSDIR} /mnt/gentoo/root/gentoo-sakura-vps/
+cp -r ${BROOT}/netconfig /mnt/gentoo/root/
 
 ### bug #275555
 #chroot /mnt/gentoo ${SCRIPTSDIR}/scripts/bootstrap-2-chroot.sh ${PASSWD1}
