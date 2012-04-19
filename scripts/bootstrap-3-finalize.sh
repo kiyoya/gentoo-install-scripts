@@ -10,9 +10,9 @@ t
 82
 w
 EOM
-mkswap /dev/sda3
+mkswap /dev/vda2
 sed -i \
-	-e "s:#/dev/vda3:/dev/vda3:" \
+	-e "s:#/dev/vda2:/dev/vda2:" \
 	/etc/fstab
 
 rm -f /kernel-version.txt

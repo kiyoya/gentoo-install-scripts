@@ -110,7 +110,7 @@ serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
 terminal --timeout=10 serial console
 title=Gentoo
 	root (hd0,0)
-	kernel /boot/kernel-$(cat /kernel-version.txt) root=/dev/vda2 console=tty0 console=ttyS0,115200n8r
+	kernel /boot/kernel-$(cat /kernel-version.txt) root=/dev/vda3 console=tty0 console=ttyS0,115200n8r
 EOM
 
 grep -v rootfs /proc/mounts > /etc/mtab
