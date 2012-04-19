@@ -1,12 +1,13 @@
 #!/bin/bash
 
-BROOT=${BROOT-/mnt/cdrom}
+BROOT=${BROOT-/root}
 SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
 
 ## Installing the Gentoo Base System
 
 env-update
 source /etc/profile
+export PS1="(chroot) $PS1"
 
 emerge --sync --quiet
 
@@ -37,10 +38,10 @@ cp arch/x86_64/boot/bzImage /boot/kernel-$(cat /kernel-version.txt)
 ## Configuring your System
 
 sed -i \
-	-e "s:/dev/BOOT:/dev/sda1:" \
-	-e "s:/dev/ROOT:/dev/sda2:" \
+	-e "s:/dev/BOOT:/dev/vda1:" \
+	-e "s:/dev/ROOT:/dev/vda3:" \
 	-e "s:ext3:ext4:" \
-	-e "s:/dev/SWAP:#/dev/sda3:" \
+	-e "s:/dev/SWAP:#/dev/vda2:" \
 	/etc/fstab
 
 ADDR=$(cat ${BROOT}/netconfig/addr.txt)
@@ -69,6 +70,8 @@ sed -i \
 
 rc-update add sshd default
 
+#emerge rsyslog --quiet
+#rc-update add rsyslog default
 emerge syslog-ng --quiet
 rc-update add syslog-ng default
 
@@ -111,7 +114,7 @@ title=Gentoo
 EOM
 
 grep -v rootfs /proc/mounts > /etc/mtab
-grub-install --no-floppy /dev/hda
+grub-install --no-floppy /dev/vda
 
 # Post install
 
