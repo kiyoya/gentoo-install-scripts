@@ -51,20 +51,17 @@ GW=$(cat ${BROOT}/netconfig/gw.txt)
 RESOLV=$(cat ${BROOT}/netconfig/resolv.txt)
 
 cat >> /etc/conf.d/net <<EOM
-config_eth0=( "${ADDR} netmask ${MASK} broadcast ${BCAST}" )
-routes_eth0=( "default via ${GW}" )
+config_eth0="${ADDR} netmask ${MASK} broadcast ${BCAST}"
+routes_eth0="default via ${GW}"
 dns_servers_eth0="${RESOLV}"
 EOM
 
+(cd /etc/init.d && ln -s net.lo net.eth0)
 rc-update add net.eth0 default
 
 sed -i \
-	-e "s:KEYMAP=\"us\":KEYMAP=\"jp106\":" \
+	-e "s:keymap=\"us\":keymap=\"jp106\":" \
 	/etc/conf.d/keymaps
-
-sed -i \
-	-e "s:#TIMEZONE=\"Factory\":TIMEZONE=\"Asia/Tokyo\":" \
-	/etc/conf.d/clock
 
 ## Installing Necessary System Tools
 
