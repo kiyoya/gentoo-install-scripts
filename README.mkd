@@ -6,7 +6,7 @@
 
 ### OS再インストール
 
-CentOS 5 (デフォルト) でOS再インストールを実行。
+CentOS 5 (デフォルト) でOS再インストールを実行。設定したrootパスワードが新システムでも使われる。
 
 ### リモートコンソール
 
@@ -24,8 +24,6 @@ CentOS 5 (デフォルト) でOS再インストールを実行。
 	cd /root/gentoo-sakura-vps
 	./scripts/bootstrap-1-base.sh
 	reboot
-
-途中 `Changing password for root` と出るので、新しいシステムの rootパスワードを入力 (2回)。
 
 再起動後、ユーザーの作成と公開鍵の設定を行い、
 

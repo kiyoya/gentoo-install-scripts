@@ -4,6 +4,9 @@ BROOT=${BROOT-/root}
 NETCONF=${BROOT}/netconfig
 SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
 
+## Restore root password
+sed -i -e "s|^root:[^:]\+:|root:$(cat ${BROOT}/shadow.txt)|" /etc/shadow
+
 ## Installing the Gentoo Base System
 
 env-update
@@ -107,7 +110,7 @@ EOM
 grep -v rootfs /proc/mounts > /etc/mtab
 grub-install --no-floppy /dev/vda
 
-# Post install
+## Post install
 
 sed -i \
 	-e "s|^c2:2345|#c2:2345|" \
@@ -117,14 +120,6 @@ sed -i \
 	-e "s|^c6:2345|#c6:2345|" \
 	-e "s|^#s0:12345:respawn:/sbin/agetty 9600 ttyS0 vt100|s0:2345:respawn:/sbin/agetty -h -L 115200 ttyS0 vt100|" \
 	/etc/inittab
-
-if [ $# -gt 0 ]
-then
-	echo "root:$1" | chpasswd
-else
-	echo "Changing password for root"
-	passwd
-fi
 
 cat > /etc/init.d/gentoo-sakura-vps-finalize <<EOM
 #!/sbin/runscript

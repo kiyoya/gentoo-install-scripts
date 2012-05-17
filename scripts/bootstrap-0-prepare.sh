@@ -40,6 +40,9 @@ cp ${D}/lib/modules/*-gentoo*/kernel/drivers/block/virtio_blk.ko ./lib/modules/*
 cp -r ${D}/lib/modules/*-gentoo*/kernel/drivers/virtio ./lib/modules/*-gentoo*/kernel/drivers/
 find . | sort | cpio -H newc -o | gzip > ../isolinux/gentoo.igz
 
+# Backup root password
+cat /etc/shadow | egrep -m 1 -o "^root:([^:]+)" | sed -e "s|^root:||" > ${D}/root/shadow.txt
+
 # Backup network configuration
 mkdir -p ${D}/root/netconfig
 ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > ${D}/root/netconfig/addr.txt
