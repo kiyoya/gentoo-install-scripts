@@ -1,0 +1,33 @@
+# Gentoo Linux インストールスクリプト (さくらVPS)
+
+## 使い方
+
+### OS再インストール
+
+CentOS 5 (デフォルト) でOS再インストールを実行。
+
+### リモートコンソール
+
+    wget https://github.com/kiyoya/gentoo-sakura-vps/zipball/master -O gentoo-sakura-vps.zip
+		unzip gentoo-sakura-vps.zip
+		cd kiyoya-gentoo-sakura-vps-*
+
+カレントディレクトリにある make.conf (`/etc/portage/make.conf`) を適宜編集し、
+
+		./scripts/bootstrap-0-prepare.sh
+		reboot
+
+再起動後、`Press any key` と出たら何かキーを押し、メニューから `Gentoo install` を選択。Gentooが起動したら、
+
+    cd /root/gentoo-sakura-vps
+		./scripts/bootstrap-1-base.sh
+		reboot
+
+途中 `Changing password for root` と出るので、新しいシステムの rootパスワードを入力 (2回)。
+
+再起動後、ユーザーの作成と公開鍵の設定を行い、
+
+    cd /root/gentoo-sakura-vps
+		./scripts/bootstrap-4-decorate.sh
+
+Enjoy your new Gentoo!
