@@ -25,9 +25,12 @@ CentOS 5 (デフォルト) でOS再インストールを実行。設定したroo
 	./scripts/bootstrap-1-base.sh
 	reboot
 
-再起動後、ユーザーの作成と公開鍵の設定を行い、
+再起動後したら root でログイン (パスワードはOS再インストール時のもの) し、ユーザーの作成と公開鍵の設定を行う。
+その後、
 
 	cd /root/gentoo-sakura-vps
-	./scripts/bootstrap-4-decorate.sh
+	./scripts/bootstrap-3-finalize.sh
+	./scripts/bootstrap-4-decorate.sh (任意)
+	reboot
 
 Enjoy your new Gentoo!

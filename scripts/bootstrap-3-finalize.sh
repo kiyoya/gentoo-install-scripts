@@ -1,7 +1,5 @@
 #!/bin/bash
 
-rm -f /kernel-version.txt
-
 fdisk /dev/vda <<EOM
 t
 2
@@ -12,5 +10,3 @@ mkswap /dev/vda2
 sed -i \
 	-e "s:#/dev/vda2:/dev/vda2:" \
 	/etc/fstab
-
-reboot
