@@ -10,7 +10,7 @@ env-update
 source /etc/profile
 export PS1="(chroot) $PS1"
 
-emerge --sync --quiet
+emerge --sync
 
 sed -i \
 	-e "s/^#en_US ISO-8859-1/en_US ISO-8859-1/" \
@@ -26,8 +26,8 @@ locale-gen
 
 cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
-emerge gentoo-sources --quiet
-emerge gentoo-sources -p --quiet | \
+emerge gentoo-sources
+emerge gentoo-sources -p | \
 	egrep -o "gentoo-sources-[r0-9.-]+" | egrep -o "[0-9][r0-9.-]+" > /kernel-version.txt
 
 cd /usr/src/linux
@@ -63,13 +63,13 @@ sed -i \
 
 rc-update add sshd default
 
-emerge syslog-ng --quiet
+emerge syslog-ng
 rc-update add syslog-ng default
 
-emerge vixie-cron --quiet
+emerge vixie-cron
 rc-update add vixie-cron default
 
-emerge ntp --quiet
+emerge ntp
 sed -i \
 	-s "s|^NTPCLIENT_OPTS=\"-s -b -u \\|NTPCLIENT_OPTS=\"-b ntp1.sakura.ad.jp\"|" \
 	-s "s|\t0.gentoo.pool.ntp.org 1.gentoo.pool.ntp.org \\\n||" \
@@ -88,11 +88,11 @@ EOM
 rc-update add ntp-client default
 rc-update add ntpd default
 
-emerge logrotate --quiet
+emerge logrotate
 
 ## Configuring the Bootloader
 
-emerge grub --quiet
+emerge grub
 
 cat > /boot/grub/menu.lst <<EOM
 default 0

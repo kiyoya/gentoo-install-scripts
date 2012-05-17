@@ -1,13 +1,13 @@
 #!/bin/bash
 
-emerge --update --deep --newuse --with-bdeps=y world --quiet
+emerge --update --deep --newuse --with-bdeps=y world
 
-emerge sudo --quiet
+emerge sudo
 sed -i \
 	-e 's|^# \(%wheel ALL=(ALL) ALL\)|\1|' \
 	/etc/sudoers
 
-emerge iptables --quiet
+emerge iptables
 /etc/init.d/iptables start
 rc-update add iptables default
 iptables -F
