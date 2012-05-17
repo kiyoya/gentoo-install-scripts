@@ -26,21 +26,19 @@ mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
 cp -a /mnt/cdrom/* ${BROOT}
 
-# Install virtio modules into initrd
+# Unpack a squashfs image
+cd ${BROOT}
 yum -y install squashfs-tools
 unsquashfs image.squashfs
 D=${BROOT}/squashfs-root
 
-mkdir -p ${BROOT}/initrd
-cd ${BROOT}/initrd
+# Install virtio modules into initrd
+mkdir -p initrd
+cd initrd
 zcat ../isolinux/gentoo.igz | cpio -i
 cp ${D}/lib/modules/*-gentoo*/kernel/drivers/block/virtio_blk.ko ./lib/modules/*-gentoo*/kernel/drivers/block/
 cp -r ${D}/lib/modules/*-gentoo*/kernel/drivers/virtio ./lib/modules/*-gentoo*/kernel/drivers/
 find . | sort | cpio -H newc -o | gzip > ../isolinux/gentoo.igz
-cd ${BROOT}
-rm -rf ${BROOT}/initrd
-umount /mnt/cdrom
-rm -f /root/install-*.iso
 
 # Backup network configuration
 mkdir -p ${D}/root/netconfig
@@ -54,11 +52,16 @@ cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
 # Create a new squashfs image
 cp -r ${SCRIPTSDIR} ${D}/root/gentoo-sakura-vps
 mksquashfs squashfs-root image.squashfs
+
+# Delete temporary files
+umount /mnt/cdrom
+cd ${BROOT}
+rm -rf ${BROOT}/initrd
+rm -f /root/install-*.iso
 rm -rf ${D}
 
 # Grub configuration
 sed -i -e "s:^hiddenmenu::" /boot/grub/grub.conf
-
 cat >> /boot/grub/grub.conf <<EOM
 
 title Gentoo install
