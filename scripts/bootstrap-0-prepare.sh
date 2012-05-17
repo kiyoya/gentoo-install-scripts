@@ -58,20 +58,9 @@ mv image.squashfs image.squashfs.old
 mksquashfs squashfsroot image.squashfs
 
 # Grub configuration
-cat > /boot/grub/menu.lst <<EOM
-default 0
-timeout 3
-serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1
-terminal --timeout=10 serial console
-title=Gentoo install
-	root (hd0,1)
-	kernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk
-	initrd /isolinux/gentoo.igz
-title CentOS (2.6.32-220.7.1.el6.x86_64)
-	root (hd0,0)
-	kernel /vmlinuz-2.6.32-220.7.1.el6.x86_64 ro root=UUID=77bdc7b0-03e8-4abe-8c85-a3e1c0137309 rd_NO_LUKS rd_NO_MD SYSFONT=latarcyrheb-sun16  KEYBOARDTYPE=pc KEYTABLE=jp106 LANG=C rd_NO_LVM rd_NO_DM nomodeset clocksource=kvm-clock console=tty0 console=ttyS0,115200n8r
-	initrd /initramfs-2.6.32-220.7.1.el6.x86_64.img
-EOM
+sed -i \
+	-e "s:^hiddenmenu:Gentoo install\n\troot (hd0,1)\n\tkernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk\n\tinitrd /isolinux/gentoo.igz:" \
+	/boot/grub/menu.lst
 
 # Copy the scripts
 cp -r ${SCRIPTSDIR} ${BROOT}/gentoo-sakura-vps
