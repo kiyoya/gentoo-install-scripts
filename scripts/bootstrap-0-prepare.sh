@@ -46,7 +46,6 @@ ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/net
 ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/bcast.txt
 ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/mask.txt
 route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/gw.txt
-#cp -L /etc/resolv.conf ${BROOT}/netconfig/resolv.conf
 cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
 	perl -pe 's/\n/ /g' > ${BROOT}/netconfig/resolv.txt
 
@@ -59,15 +58,7 @@ mksquashfs squashfsroot image.squashfs
 
 # Grub configuration
 sed -i \
-	-e "s:^hiddenmenu:Gentoo install\n\troot (hd0,1)\n\tkernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk\n\tinitrd /isolinux/gentoo.igz:" \
+	-e "s:^hiddenmenu:title Gentoo install\n\troot (hd0,1)\n\tkernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk\n\tinitrd /isolinux/gentoo.igz:" \
 	/boot/grub/menu.lst
-
-# Copy the scripts
-cp -r ${SCRIPTSDIR} ${BROOT}/gentoo-sakura-vps
-
-#if [ $# -gt 0 ] && [ -x $1 ]
-#then
-#	$1 ${BROOT} $2
-#fi
 
 #reboot
