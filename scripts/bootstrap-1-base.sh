@@ -39,7 +39,8 @@ wget $(wget -q -O - ${GENTOO_MIRROR}/snapshots/ | \
 tar xvjf portage-latest.tar.bz2 -C /mnt/gentoo/usr
 rm -f portage-latest.tar.bz2
 
-cat ${SCRIPTSDIR}/make.conf > /mnt/gentoo/etc/make.conf
+mkdir -p /mnt/gentoo/etc/portage
+cp ${SCRIPTSDIR}/make.conf /mnt/gentoo/etc/portage/make.conf
 
 ## Installing the Gentoo Base System
 
@@ -67,4 +68,4 @@ cd
 umount -l /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
 umount -l /mnt/gentoo
 
-reboot
+#reboot

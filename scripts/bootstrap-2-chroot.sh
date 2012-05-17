@@ -33,9 +33,9 @@ emerge gentoo-sources -p --quiet | \
 cd /usr/src/linux
 cp $(find ${SCRIPTSDIR}/scripts/linux-config -type f | sort -nr | head -n 1) .config
 make oldconfig
-make && make modules_install
+make
+make modules_install
 cp arch/x86_64/boot/bzImage /boot/kernel-$(cat /kernel-version.txt)
-rm -f /kernel-version.txt
 
 ## Configuring your System
 

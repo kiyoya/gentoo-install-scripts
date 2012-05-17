@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -f /kernel-version.txt
+
 fdisk /dev/vda <<EOM
 t
 2
