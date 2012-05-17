@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BROOT=${BROOT-/root}
+NETCONF=${BROOT}/netconfig
 SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
 
 ## Installing the Gentoo Base System
@@ -34,6 +35,7 @@ cp $(find ${SCRIPTSDIR}/scripts/linux-config -type f | sort -nr | head -n 1) .co
 make oldconfig
 make && make modules_install
 cp arch/x86_64/boot/bzImage /boot/kernel-$(cat /kernel-version.txt)
+rm -f /kernel-version.txt
 
 ## Configuring your System
 
@@ -44,16 +46,10 @@ sed -i \
 	-e "s:/dev/SWAP:#/dev/vda2:" \
 	/etc/fstab
 
-ADDR=$(cat ${BROOT}/netconfig/addr.txt)
-MASK=$(cat ${BROOT}/netconfig/mask.txt)
-BCAST=$(cat ${BROOT}/netconfig/bcast.txt)
-GW=$(cat ${BROOT}/netconfig/gw.txt)
-RESOLV=$(cat ${BROOT}/netconfig/resolv.txt)
-
 cat >> /etc/conf.d/net <<EOM
-config_eth0="${ADDR} netmask ${MASK} broadcast ${BCAST}"
-routes_eth0="default via ${GW}"
-dns_servers_eth0="${RESOLV}"
+config_eth0="$(cat ${NETCONF}/addr.txt) netmask $(cat ${NETCONF}/mask.txt) broadcast $(cat ${NETCONF}/bcast.txt)"
+routes_eth0="default via $(cat ${NETCONF}/gw.txt)"
+dns_servers_eth0="$(cat ${NETCONF}/resolv.txt)"
 EOM
 
 (cd /etc/init.d && ln -s net.lo net.eth0)
@@ -67,8 +63,6 @@ sed -i \
 
 rc-update add sshd default
 
-#emerge rsyslog --quiet
-#rc-update add rsyslog default
 emerge syslog-ng --quiet
 rc-update add syslog-ng default
 
