@@ -4,25 +4,6 @@ BROOT=${BROOT-/mnt/livecd/root}
 SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
 GENTOO_MIRROR=$(bash ${SCRIPTSDIR}/scripts/bootstrap-misc-mirror.sh)
 
-### bug #275555
-## Ask for the new root password
-#trap 'stty echo' INT
-#stty -echo
-#echo -n "New root password: "
-#read PASSWD1
-#echo ""
-#echo -n "New root password (again): "
-#read PASSWD2
-#echo ""
-#stty echo
-#trap INT
-#
-#if [ "${PASSWD1}" != "${PASSWD2}" ]
-#then
-#	echo "Password mismatch."
-#	exit
-#fi
-
 ## Configuring your network
 
 ifconfig eth0 $(cat ${BROOT}/netconfig/addr.txt) \

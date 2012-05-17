@@ -25,41 +25,42 @@ wget $(wget -q -O - ${GENTOO_MIRROR}/releases/amd64/autobuilds/current-iso/ | \
 mkdir -p /mnt/cdrom
 mount -o loop /root/install-*.iso /mnt/cdrom
 cp -a /mnt/cdrom/* ${BROOT}
-cd ${BROOT}
+
+# Install virtio modules into initrd
 yum -y install squashfs-tools
 unsquashfs image.squashfs
-mv squashfs-root squashfsroot
+D=${BROOT}/squashfs-root
 
-mkdir -p initrd
-cd initrd
+mkdir -p ${BROOT}/initrd
+cd ${BROOT}/initrd
 zcat ../isolinux/gentoo.igz | cpio -i
-mv ../isolinux/gentoo.igz ../isolinux/gentoo.igz.old
-cp ../squashfsroot/lib/modules/3.2.1-gentoo-r2/kernel/drivers/block/virtio_blk.ko lib/modules/3.2.1-gentoo-r2/kernel/drivers/block/
-cp -r ../squashfsroot/lib/modules/3.2.1-gentoo-r2/kernel/drivers/virtio lib/modules/3.2.1-gentoo-r2/kernel/drivers/
+cp ${D}/lib/modules/*-gentoo*/kernel/drivers/block/virtio_blk.ko ./lib/modules/*-gentoo*/kernel/drivers/block/
+cp -r ${D}/lib/modules/*-gentoo*/kernel/drivers/virtio ./lib/modules/*-gentoo*/kernel/drivers/
 find . | sort | cpio -H newc -o | gzip > ../isolinux/gentoo.igz
+cd ${BROOT}
+rm -rf ${BROOT}/initrd
 umount /mnt/cdrom
 rm -f /root/install-*.iso
 
 # Backup network configuration
-mkdir -p ${BROOT}/netconfig
-ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/addr.txt
-ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/bcast.txt
-ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/mask.txt
-route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > ${BROOT}/netconfig/gw.txt
+mkdir -p ${D}/root/netconfig
+ifconfig eth0 | egrep -o "inet addr:[0-9.]+" | egrep -o "[0-9.]+" > ${D}/root/netconfig/addr.txt
+ifconfig eth0 | egrep -o "Bcast:[0-9.]+" | egrep -o "[0-9.]+" > ${D}/root/netconfig/bcast.txt
+ifconfig eth0 | egrep -o "Mask:[0-9.]+" | egrep -o "[0-9.]+" > ${D}/root/netconfig/mask.txt
+route | egrep -o "default +[0-9.]+" | egrep -o "[0-9.]+" > ${D}/root/netconfig/gw.txt
 cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
-	perl -pe 's/\n/ /g' > ${BROOT}/netconfig/resolv.txt
+	perl -pe 's/\n/ /g' > ${D}/root/netconfig/resolv.txt
 
-cd ${BROOT}
-cp -r netconfig ./squashfsroot/root/
-cp -r ${SCRIPTSDIR} ./squashfsroot/root/gentoo-sakura-vps
-
-mv image.squashfs image.squashfs.old
-mksquashfs squashfsroot image.squashfs
+# Create a new squashfs image
+cp -r ${SCRIPTSDIR} ${D}/root/gentoo-sakura-vps
+mksquashfs squashfs-root image.squashfs
+rm -rf ${D}
 
 # Grub configuration
-sed -i -e "s:^hiddenmenu::" /boot/grub/menu.lst
+sed -i -e "s:^hiddenmenu::" /boot/grub/grub.conf
 
-cat >> /boot/grub/menu.lst <<EOM
+cat >> /boot/grub/grub.conf <<EOM
+
 title Gentoo install
 	root (hd0,1)
 	kernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk
