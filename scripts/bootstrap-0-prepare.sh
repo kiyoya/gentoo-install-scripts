@@ -57,8 +57,13 @@ mv image.squashfs image.squashfs.old
 mksquashfs squashfsroot image.squashfs
 
 # Grub configuration
-sed -i \
-	-e "s:^hiddenmenu:title Gentoo install\n\troot (hd0,1)\n\tkernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk\n\tinitrd /isolinux/gentoo.igz:" \
-	/boot/grub/menu.lst
+sed -i -e "s:^hiddenmenu::" /boot/grub/menu.lst
+
+cat >> /boot/grub/menu.lst <<EOM
+title Gentoo install
+	root (hd0,1)
+	kernel /isolinux/gentoo root=/dev/ram0 init=/linuxrc looptype=squashfs loop=/image.squashfs cdroot=/dev/vda2 initrd=gentoo.igz udev nodevfs console=tty0 console=ttyS0,115200n8r doload=virtio,virtio_ring,virtio_pci,virtio_blk
+	initrd /isolinux/gentoo.igz
+EOM
 
 #reboot
