@@ -51,6 +51,7 @@ cat /etc/resolv.conf | egrep -o 'nameserver +[0-9.]+' | egrep -o '[0-9.]+' | \
 
 # Create a new squashfs image
 cp -r ${SCRIPTSDIR} ${D}/root/gentoo-sakura-vps
+rm -f ${BROOT}/image.squashfs
 mksquashfs ${D} ${BROOT}/image.squashfs
 
 # Delete temporary files
