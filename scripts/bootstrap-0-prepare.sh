@@ -8,12 +8,7 @@ cd /root
 
 # Use swap partition as a temporary storage
 swapoff /dev/vda2
-fdisk /dev/vda <<EOF
-t
-2
-83
-w
-EOF
+parted -s /dev/vda mkfs 2 ext2
 mkfs.ext3 /dev/vda2
 mkdir -p ${BROOT}
 mount /dev/vda2 ${BROOT}
