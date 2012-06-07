@@ -77,4 +77,4 @@ title Gentoo install
 	initrd /isolinux/gentoo.igz
 EOM
 
-reboot
+#reboot
