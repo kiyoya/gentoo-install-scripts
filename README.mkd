@@ -1,6 +1,6 @@
 # Gentoo Linux インストールスクリプト (さくらVPS)
 
-各スクリプトの具体的な挙動は<a href="http://blog.kiyoya.shi-ba.org/post/1203448287">ちょっと古い説明</a>を参照。
+Larry meets Sakura.
 
 ## 使い方
 
@@ -34,3 +34,7 @@ CentOS 5 (デフォルト) でOS再インストールを実行。設定したroo
 	reboot
 
 Enjoy your new Gentoo!
+
+## より詳しい説明
+
+概要はほとんど変わっていないので、<a href="http://blog.kiyoya.shi-ba.org/post/1203448287">ちょっと古い説明</a>を参照。
