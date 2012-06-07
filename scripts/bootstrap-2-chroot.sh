@@ -4,9 +4,6 @@ BROOT=${BROOT-/root}
 NETCONF=${BROOT}/netconfig
 SCRIPTSDIR=$(cd $(dirname $0); cd ../; pwd)
 
-## Restore root password
-sed -i -e "s|^root:[^:]\+:|root:$(cat ${BROOT}/shadow.txt):|" /etc/shadow
-
 ## Installing the Gentoo Base System
 
 env-update

@@ -55,6 +55,9 @@ cp -r ${BROOT}/netconfig /mnt/gentoo/root/
 
 chroot /mnt/gentoo ${SCRIPTSDIR}/scripts/bootstrap-2-chroot.sh
 
+## Restore root password
+sed -i -e "s|^root:[^:]*:|root:$(cat ${BROOT}/shadow.txt):|" /mnt/gentoo/etc/shadow
+
 cd
 umount -l /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
 umount -l /mnt/gentoo
