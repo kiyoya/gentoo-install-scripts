@@ -66,7 +66,7 @@ rm -rf ${D}
 
 # Grub configuration
 sed -i \
-	-e "s:^default 0:default $(cat /boot/grub/grub.conf | grep "^title" | wc -l )" \
+	-e "s:^default[= ]0:default $(cat /boot/grub/grub.conf | grep "^title" | wc -l )" \
 	-e "s:^hiddenmenu::" \
 	/boot/grub/grub.conf
 cat >> /boot/grub/grub.conf <<EOM
