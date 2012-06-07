@@ -65,7 +65,10 @@ rm -f /root/install-*.iso
 rm -rf ${D}
 
 # Grub configuration
-sed -i -e "s:^hiddenmenu::" /boot/grub/grub.conf
+sed -i \
+	-e "s:^default 0:default $(cat /boot/grub/grub.conf | grep "^title" | wc -l )" \
+	-e "s:^hiddenmenu::" \
+	/boot/grub/grub.conf
 cat >> /boot/grub/grub.conf <<EOM
 
 title Gentoo install
@@ -74,4 +77,4 @@ title Gentoo install
 	initrd /isolinux/gentoo.igz
 EOM
 
-#reboot
+reboot
