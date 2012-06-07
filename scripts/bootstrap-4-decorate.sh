@@ -8,7 +8,6 @@ sed -i \
 	/etc/sudoers
 
 emerge iptables
-/etc/init.d/iptables start
 rc-update add iptables default
 iptables -F
 iptables -X
@@ -21,6 +20,7 @@ iptables -A INPUT -p tcp ! --syn -m state --state NEW -j DROP
 iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 /etc/init.d/iptables save
+/etc/init.d/iptables start
 
 sed -i \
 	-e "s|^#ChallengeResponseAuthentication yes|ChallengeResponseAuthentication no|" \
