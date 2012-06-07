@@ -123,4 +123,4 @@ sed -i \
 	-e "s|^#s0:12345:respawn:/sbin/agetty 9600 ttyS0 vt100|s0:2345:respawn:/sbin/agetty -h -L 115200 ttyS0 vt100|" \
 	/etc/inittab
 
-#exit
+exit
