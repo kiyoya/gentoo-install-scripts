@@ -53,16 +53,7 @@ mount --rbind /dev /mnt/gentoo/dev
 cp -r ${SCRIPTSDIR} /mnt/gentoo/root/gentoo-sakura-vps/
 cp -r ${BROOT}/netconfig /mnt/gentoo/root/
 
-## Preparing the swap file
-cd /mnt/gentoo
-dd if=/dev/zero of=swap.img bs=1024K count=128
-mkswap swap.img
-swapon swap.img
-
 chroot /mnt/gentoo ${SCRIPTSDIR}/scripts/bootstrap-2-chroot.sh
-
-swapoff /mnt/gentoo/swap.img
-rm -f /mnt/gentoo/swap.img
 
 cd
 umount -l /mnt/gentoo/boot /mnt/gentoo/dev /mnt/gentoo/proc
