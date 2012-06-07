@@ -105,6 +105,8 @@ title=Gentoo
 EOM
 
 grep -v rootfs /proc/mounts > /etc/mtab
+# bug 259613
+echo "(hd0)   /dev/vda" >> /boot/grub/device.map
 grub-install --no-floppy /dev/vda
 
 ## Post install
