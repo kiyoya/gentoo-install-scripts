@@ -30,7 +30,7 @@ D=${BROOT}/squashfs-root
 # Install virtio modules into initrd
 mkdir -p initrd
 cd initrd
-zcat ../isolinux/gentoo.igz | cpio -i
+xzcat ../isolinux/gentoo.igz | cpio -i
 cp ${D}/lib/modules/*-gentoo*/kernel/drivers/block/virtio_blk.ko ./lib/modules/*-gentoo*/kernel/drivers/block/
 cp -r ${D}/lib/modules/*-gentoo*/kernel/drivers/virtio ./lib/modules/*-gentoo*/kernel/drivers/
 find . | sort | cpio -H newc -o | gzip > ../isolinux/gentoo.igz
