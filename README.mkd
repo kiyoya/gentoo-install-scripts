@@ -10,9 +10,8 @@ CentOS 5 (デフォルト) でOS再インストールを実行。設定したroo
 
 ### リモートコンソール
 
-	wget https://github.com/kiyoya/gentoo-sakura-vps/zipball/master -O gentoo-sakura-vps.zip
-	unzip gentoo-sakura-vps.zip
-	cd kiyoya-gentoo-sakura-vps-*
+	git clone https://github.com/kiyoya/gentoo-sakura-vps.git
+	cd gentoo-sakura-vps
 
 カレントディレクトリにある make.conf (`/etc/portage/make.conf`) を適宜編集し、
 
