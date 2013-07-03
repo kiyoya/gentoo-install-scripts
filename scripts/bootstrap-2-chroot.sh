@@ -95,7 +95,7 @@ emerge "=sys-block/parted-2.3*"
 
 emerge ethtool
 cat > /etc/udev/rules.d/50-eth_tso.rules <<EOM
-ACTION=="add", SUBSYSTEM=="net", KERNEL=="eth0", RUN+="/sbin/ethtool -K eth0 tso off"
+ACTION=="add", SUBSYSTEM=="net", KERNEL=="eth0", RUN+="/usr/sbin/ethtool -K eth0 tso off"
 EOM
 
 ## Configuring the Bootloader
